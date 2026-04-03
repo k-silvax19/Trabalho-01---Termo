@@ -10,7 +10,6 @@ class Program
         while (true == true)
         {
             string palavraAleatoria = ListaPalavras();
-            int tentantiva = 6;
             bool[] letrasUsadas = new bool[palavraAleatoria.Length];
 
             Console.Clear();
@@ -39,7 +38,7 @@ class Program
                 else
                 {
                     bool encontrada = false;
-                    for (int contador2 = 0; contador2 < palavraAleatoria.Length; j++)
+                    for (int contador2 = 0; contador2 < palavraAleatoria.Length; contador2++)
                     {
                         if (!letrasUsadas[contador2] && inputJogador[contador2] == palavraAleatoria[contador2])
                         {
@@ -59,7 +58,7 @@ class Program
                     }
                 }
 
-                Console.Write(inputJogador[i]);
+                Console.Write(inputJogador[contador]);
             }
 
             Console.ForegroundColor = ConsoleColor.Black;
