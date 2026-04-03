@@ -3,14 +3,15 @@
 using System.ComponentModel;
 using System.Security.Cryptography;
 
-class Program
+public static class Program
 {
     static void Main(string[] args)
     {
         while (true == true)
         {
-            string palavraAleatoria = ListaPalavras();
-            bool[] letrasUsadas = new bool[palavraAleatoria.Length];
+            string[] ultimasPalavras = new string[0];
+            string palavraDigitada = "";
+            string palavraParaJogar = "".SortWord();
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -21,61 +22,84 @@ class Program
             Console.WriteLine(@"║    | | | |___|  _ <| |  | | |_| |  ║");
             Console.WriteLine(@"║    |_| |_____|_| \_\_|  |_|\___/   ║");
             Console.WriteLine("╚════════════════════════════════════╝");
+            Console.WriteLine("Para sair do jogo, digite 'SAIR'.");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Se a letra estiver na posição correta, ela ficará verde.");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Se a letra estiver na palavra, mas na posição errada, ela ficará amarela.");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Se a letra não estiver na palavra, ela ficará vermelha.");
             Console.ForegroundColor = ConsoleColor.Black;
-
             Console.WriteLine(" ");
 
-            Console.Write("digite uma palavra: ");
-            string inputJogador = Console.ReadLine().ToUpper();
-
-            for (int contador = 0; contador < palavraAleatoria.Length; contador++)
+            while (palavraDigitada != palavraParaJogar && palavraDigitada != "SAIR")
             {
-                if (inputJogador[contador] == palavraAleatoria[contador])
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("Digite uma palavra: ");
+                palavraDigitada = Console.ReadLine().ToUpper();
+
+
+                if (palavraDigitada.Length != 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    letrasUsadas[contador] = true;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("últimas palavras digitadas: " + string.Join(", ", ultimasPalavras) + "\n");
                 }
-                else
+
+
+                if (palavraDigitada == "SAIR")
                 {
-                    bool encontrada = false;
-                    for (int contador2 = 0; contador2 < palavraAleatoria.Length; contador2++)
+                    Console.WriteLine("Obrigado por jogar!");
+                    break;
+                }
+
+                if (ultimasPalavras.Contains(palavraDigitada))
+                {
+                    Console.WriteLine("Você já digitou essa palavra!");
+                    continue;
+                }
+
+                if (palavraDigitada.Length > palavraParaJogar.Length)
+                {
+                    Console.WriteLine("A palavra digitada é maior que a palavra para jogar!");
+                    continue;
+                }
+
+                ultimasPalavras = ultimasPalavras.Append(palavraDigitada).ToArray();
+
+                //laco de repetição para verificar cada letra da palavra digitada e comparar com a palavra para jogar
+                for (int i = 0; i < palavraDigitada.Length; i++)
+                {
+                    //letra na posição correta
+                    if (palavraDigitada[i] == palavraParaJogar[i])
                     {
-                        if (!letrasUsadas[contador2] && inputJogador[contador2] == palavraAleatoria[contador2])
-                        {
-                            encontrada = true;
-                            letrasUsadas[contador2] = true;
-                            break;
-                        }
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(palavraParaJogar[i]);
                     }
 
-                    if (encontrada)
+                    //letra existe na palavra mas não está na posição correta
+                    else if (palavraParaJogar.Contains(palavraDigitada[i]))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(palavraDigitada[i]);
                     }
+
+                    //letra não existe na palavra
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(palavraDigitada[i]);
                     }
                 }
-
-                Console.Write(inputJogador[contador]);
+                Console.WriteLine();
             }
-
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine();
-
-            Console.Write("Deseja continuar o jogo? (s/N): ");
-            string? opcaoContinuar = Console.ReadLine()?.ToUpper();
-
-            if (opcaoContinuar != "S")
-                break;
-
         }
 
-        static string ListaPalavras()
-        {
-            string[] Lista = [
-            "CARRO",
+    }
+
+    public static string SortWord(this string word)
+    {
+        string[] Lista = [
+                "CARRO",
                 "MANGA",
                 "VERDE",
                 "PRETO",
@@ -106,11 +130,8 @@ class Program
                 "NOITE",
                 "TARDE"
             ];
-            int dicionarioAleatorio = RandomNumberGenerator.GetInt32(Lista.Length);
-
-            string palavraAleatoria = Lista[dicionarioAleatorio];
-
-            return palavraAleatoria;
-        }
+        Random random = new Random();
+        int index = random.Next(Lista.Length);
+        return Lista[index];
     }
 }
