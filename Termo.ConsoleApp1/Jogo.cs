@@ -43,7 +43,7 @@ static class Jogo
 
             ultimasPalavras = ultimasPalavras.Append(palavraDigitada).ToArray(); //aqui usei uma nova ferramenta chamada "Append" ela serve para pegar tudo que existe na array "Ultimas Palavras" e adiciona a "PalavraDigitada" no final criando um novo array (serve para salvar as ultimas palavras digitadas e mostrar para o usuario)
 
-            //foreach (esquema de laço para loop com string, array e etc), ele funciona aqui para imprimir os acertos/erros e imprimir atras as letras anteriores
+            //foreach (esquema de laço para loop com string, array e etc), ele funciona aqui para imprimir os acertos/erros e imprimir atras as letras anteriores coloridas
             foreach (string palavra in ultimasPalavras)
             {
                 for (int contador = 0; contador < palavraParaJogar.Length; contador++)
